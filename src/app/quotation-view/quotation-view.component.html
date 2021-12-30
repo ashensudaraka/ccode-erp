@@ -1,0 +1,433 @@
+<div class="quotationArea">
+    <form [formGroup]="quotationForm" (ngSubmit)="save()">
+        <div class="row mb-2">
+            <div class="col-7">
+                <h4>Quotation</h4>
+            </div>
+            <div class="col-3" style="text-align: right;">
+                <h6 class="quotationNo">Quotation No: <span id="quotationNo">XXXXXX</span></h6>
+            </div>
+            <div class="col-2" style="text-align: right;">
+                <button type="button" class="btn btn-danger estimationBtn">Estimation</button>
+            </div>
+
+        </div>
+
+        <div class="container-fluid quotationTemplate">
+
+            <div class="row mb-3">
+                <!--Left upper area-->
+                <div class="col-5">
+                    <div class="card mt-3">
+
+                        <div class="form-group row mt-3">
+                            <label for="method" class="col-3 col-form-label">Method</label>
+                            <div class="col-6">
+                                <select class="form-control" id="method" formControlName="method" disabled>
+                                    <option value="email" selected>Send via Email</option>
+                                    <option value="print">Print</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="customerCode" class="col-3 col-form-label">Client</label>
+                            <div class="col-6">
+                                <select class="form-control" id="customerCode" formControlName="customerCode" disabled>
+                                    <option value="" disabled selected>(Select Customer)</option>                                
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-2"></div>
+
+                <!--Right upper area-->
+                <div class="col-5">
+                    <div class="card mt-3">
+
+                        <div class="form-group row mt-3">
+                            <label for="quotationDate" class="col-3 col-form-label" style="white-space: nowrap;">Quotation Date</label>
+                            <div class="col-6">
+                                <input type="text" class="form-control" id="quotationDate" formControlName="quotationDate" disabled>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="validTillDate" class="col-3 col-form-label" style="white-space: nowrap;">Valid Till Date</label>
+                            <div class="col-6">
+                                <input type="text" class="form-control" id="validTillDate" formControlName="validTillDate" disabled>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!--Table-->
+            <table class="table table-striped table-bordered table-sm">
+                <thead>
+                    <tr>
+                        <td style="width: 40px;"></td>
+                        <td><span class="tableHeading">Finished Good Name</span></td>
+                        <td><span class="tableHeading">Description</span></td>
+                        <td style="width: 180px;"><span class="tableHeading">Unit Price</span></td>
+                        <td style="width: 100px;"><span class="tableHeading">Quantity</span></td>
+                        <td style="width: 180px;"><span class="tableHeading">Subtotal</span></td>
+                        <td style="width: 20px;"></td>
+                        <td style="width: 120px;"></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let field of fieldArray; let i = index">
+                        <td>{{i+1}}.</td>
+                        <td>
+                            <div class="input-group input-group-sm">
+                                <input [(ngModel)]="field.item" class="form-control form-control-sm" name="{{field.item}}" [ngModelOptions]="{standalone: true}" disabled>
+                                <div class="input-group-append">
+                                    <button class="btn btn-sm btn-light openModalBtn" (click)="openItemSelectionModal(i)" type="button"><i class="fas fa-external-link-alt"></i></button>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <input [(ngModel)]="field.description" class="form-control form-control-sm" type="text" name="{{field.description}}" [ngModelOptions]="{standalone: true}" disabled/>
+                        </td>
+                        <td>
+                            <input [(ngModel)]="field.unitPrice" (keyup)="calculateItemTotal(i)" class="form-control form-control-sm" type="number" name="{{field.unitPrice}}" placeholder="Unit Price" [ngModelOptions]="{standalone: true}" disabled/>
+                        </td>
+                        <td class="tableData">
+                            <input [(ngModel)]="field.quantity" (keyup)="calculateItemTotal(i)" class="form-control form-control-sm" type="number" name="{{field.quantity}}" placeholder="Quantity" [ngModelOptions]="{standalone: true}" />
+                        </td>
+                        <td>
+                            <div class="input-group input-group-sm">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Rs.</span>
+                                </div>
+                                <input [(ngModel)]="field.subTotal" class="form-control form-control-sm" type="number" id="subTotal{{i}}" name="{{field.subTotal}}" [ngModelOptions]="{standalone: true}" disabled />
+                                <div class="input-group-append">
+                                    <span class="input-group-text">.00</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-danger" type="button" (click)="deleteFieldValue(i)"><i class="fas fa-times"></i></button>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#addNewItemModal">New Item</button>
+                        </td>
+                    </tr>
+
+                    <tr *ngFor="let j = index">
+                        <td></td>
+                        <td class="tableData">
+                            <select class="form-control form-control-sm" id="newAttributeItem" [(ngModel)]="newAttribute.item" name="newAttributeItem" [ngModelOptions]="{standalone: true}">
+                            <option *ngFor="let data of itemArray" value="{{ data.itemCode }}">{{ data.itemName }}</option>
+                        </select>
+                        </td>
+                        <td class="tableData">
+                            <input class="form-control form-control-sm" type="text" id="newAttributeDescription" [(ngModel)]="newAttribute.description" name="newAttributeDescription" [ngModelOptions]="{standalone: true}" />
+                        </td>
+                        <td class="tableData">
+                            <input class="form-control form-control-sm" type="text" id="newAttributeUnitPrice" [(ngModel)]="newAttribute.unitPrice" name="newAttributePrice" placeholder="Unit Price" [ngModelOptions]="{standalone: true}" />
+                        </td>
+                        <td class="tableData">
+                            <input class="form-control form-control-sm" type="text" id="newAttributeQuantity" [(ngModel)]="newAttribute.quantity" name="newAttributeQuantity" placeholder="Quantity" [ngModelOptions]="{standalone: true}" />
+                        </td>
+
+                        <td>
+                            <input class="form-control form-control-sm" type="text" id="newAttributeSubTotal" [(ngModel)]="newAttribute.subTotal" name="newAttributeSubTotal" value="Rs.0.00" [ngModelOptions]="{standalone: true}" />
+                        </td>
+                        <td>
+                            <button class="btn btn-danger" type="button" (click)="deleteNewFieldValue(j)"><i class="fas fa-lg fa-window-close"></i></button>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="row">
+                <div class="col-6">
+                    <div class="btn-group" style="margin-top: -15px;">
+                        <button type="button" class="btn btn-success active" (click)="addFieldValue()"><i class="fas fa-plus"></i></button>
+                        <button type="button" class="btn btn-success" (click)="addFieldValue()">Add New Line</button>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <table class="table table-sm table-striped table-bordered" style="margin-top: -15px;">
+                        <tr>
+
+                            <th style="text-align: right">Items Total</th>
+
+                            <td style="width: 100px;">
+                                <div class="input-group input-group-sm">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Rs.</span>
+                                    </div>
+                                    <input type="text" class="form-control form-control-sm" formControlName="itemTotal" disabled>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">.00</span>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td style="width: 38px;"></td>
+
+                        </tr>
+                        <tr>
+
+                            <th style="text-align: right">Tax</th>
+
+                            <td style="width: 180px;">
+                                <div class="input-group input-group-sm">
+                                    <select class="form-control form-control-sm" (change)="calculateItemTotal('a')" formControlName="tax">
+                                        <option value="5">5%</option>
+                                        <option value="10">10%</option>
+                                        <option value="15">15%</option>
+                                        <option value="20">20%</option>
+                                    </select>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">%</span>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td style="width: 20px;"></td>
+
+                        </tr>
+                        <tr>
+                            <th style="text-align: right">Total Amount</th>
+                            <td style="width: 180px;">
+                                <div class="input-group input-group-sm">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Rs.</span>
+                                    </div>
+                                    <input type="text" class="form-control form-control-sm" formControlName="totalAmount" disabled>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">.00</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="width: 160px;"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!--Footer fields area-->
+            <div class="footer">
+
+                <div class="form-group">
+                    <label for="quotationDescription">Description</label>
+                    <textarea class="form-control" id="quotationDescription" formControlName="quotationDescription" rows="6"></textarea>
+                </div>
+
+
+                <button type="submit" class="btn btn-primary mb-3 saveBtn">Save</button>
+                <button type="button" class="btn btn-success mb-3 sendBtn" *ngIf="viewSendBtn">Send</button>
+                <button type="button" class="btn btn-success mb-3 printBtn" *ngIf="viewPrintBtn">Print</button>
+                <button type="button" class="btn btn-light mb-3 cancelBtn" routerLink="/home/quotationList">Cancel</button>
+
+
+            </div>
+
+        </div>
+    </form>
+
+</div>
+
+
+<!-- Add New Item Modal -->
+<div class="modal fade" id="addNewItemModal" tabindex="-1" role="dialog" aria-labelledby="addNewItemModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 45%;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addNewItemModalLabel">Add New Item</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+            <form [formGroup]="addItemForm" (ngSubmit)="addItem()">
+                <div class="modal-body">
+
+                    <div class="form-row">
+                        <div class="col-4">
+                            <P style="font-weight: 550;">Item Type:</P>
+                        </div>
+                        <div class="col-8">
+                            <div class="form-group">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="fg" value="2" checked>
+                                    <label class="form-check-label" for="fg">Finished Good</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="sv" value="3">
+                                    <label class="form-check-label" for="sv">Service</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="addItemName">Item Name</label>
+                                <input type="text" class="form-control" id="addItemName" formControlName="addItemName" [ngClass]="{ 'is-invalid': addItemFormsubmitted && f2.addItemName.errors }">
+                                <div *ngIf="addItemFormsubmitted && f2.addItemName.errors" class="invalid-feedback">
+                                    <div *ngIf="f2.addItemName.errors.required">Please fill out this field.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-8">
+                            <div class="form-group">
+                                <label for="addDescription">Description</label>
+                                <input type="text" class="form-control" id="addDescription" formControlName="addDescription" [ngClass]="{ 'is-invalid': addItemFormsubmitted && f2.addDescription.errors }">
+                                <div *ngIf="addItemFormsubmitted && f2.addDescription.errors" class="invalid-feedback">
+                                    <div *ngIf="f2.addDescription.errors.required">Please fill out this field.</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="addBuyPrice">Buy Price</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Rs.</span>
+                                    </div>
+                                    <input type="number" class="form-control" id="addBuyPrice" formControlName="addBuyPrice" [ngClass]="{ 'is-invalid': addItemFormsubmitted && f2.addBuyPrice.errors }">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">.00</span>
+                                    </div>
+                                    <div *ngIf="addItemFormsubmitted && f2.addBuyPrice.errors" class="invalid-feedback">
+                                        <div *ngIf="f2.addBuyPrice.errors.required">Please fill out this field.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="addSellPrice">Sell Price</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Rs.</span>
+                                    </div>
+                                    <input type="number" class="form-control" id="addSellPrice" formControlName="addSellPrice" [ngClass]="{ 'is-invalid': addItemFormsubmitted && f2.addSellPrice.errors }">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">.00</span>
+                                    </div>
+                                    <div *ngIf="addItemFormsubmitted && f2.addSellPrice.errors" class="invalid-feedback">
+                                        <div *ngIf="f2.addSellPrice.errors.required">Please fill out this field.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="addUom">Unit of Measurement</label>
+                                <select class="form-control" id="addUom" formControlName="addUom" [ngClass]="{ 'is-invalid': addItemFormsubmitted && f2.addUom.errors }">
+                                        <option *ngFor="let data of uomarray" value="{{ data.id }}">{{ data.umName }}</option>                                
+                                    </select>
+                                <div *ngIf="addItemFormsubmitted && f2.addUom.errors" class="invalid-feedback">
+                                    <div *ngIf="f2.addUom.errors.required">Please fill out this field.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="addBarCode">Bar Code</label>
+                        <input type="text" class="form-control" id="addBarCode" formControlName="addBarCode">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light closeBtn" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Item Selection Modal -->
+<div class="modal fade" id="itemSelectionModal" tabindex="-1" role="dialog" aria-labelledby="itemSelectionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="itemSelectionModalLabel">Item Selection</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <!--Error messages-->
+                <div id="errorAlert" class="alert alert-danger">
+                    <strong>Error! {{ errorCode }}</strong> {{ errorMessage }}
+                </div>
+
+                <!--Search area-->
+                <div class="form-row mb-3">
+                    <div class="col-3">
+                        <label for="searchField1">Item Code</label>
+                        <input type="text" class="form-control" id="searchField1" [(ngModel)]="searchItemCode" placeholder="Search by Code">
+                    </div>
+                    <div class="col-3">
+                        <label for="searchField2">Item Name</label>
+                        <input type="text" class="form-control" id="searchField2" [(ngModel)]="searchItemName" placeholder="Search by Name">
+                    </div>
+                    <div class="col-3">
+                        <label for="searchField2">Item Type</label>
+                        <select type="text" class="form-control" id="searchField3" [(ngModel)]="searchItemType" placeholder="Search by Type">
+                            <option value="" selected hidden>Search by Type</option>
+                            <option value="1">Raw Material</option>
+                            <option value="3">Service</option>
+                        </select>
+                    </div>
+                    <div class="col-3">
+                        <button type="button" class="btn btn-success mt-4" (click)="filterItemData()">Search</button>
+                        <button type="button" class="btn btn-primary mt-4" style="margin-left: 5px;" (click)="resetSearchFields()">Reset</button>
+                    </div>
+                </div>
+
+                <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                    <table class="table table-striped table-hover table-bordered table-sm mb-0">
+                        <thead>
+                            <tr>
+                                <td scope="col">
+                                    <span class="tableHeading">Raw Material Code</span>
+                                </td>
+                                <td scope="col">
+                                    <span class="tableHeading">Raw Material Name</span>
+                                </td>
+                                <td scope="col">
+                                    <span class="tableHeading">Description</span>
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="line" id="line{{ i }}" *ngFor="let data of itemArray; let i = index" (click)="getItemRowData(data)" style="cursor: pointer;">
+                                <td>{{ data.itemCode }}</td>
+                                <td>{{ data.itemName }}</td>
+                                <td>{{ data.description }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light closeBtn" style="margin-left: 0px;" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

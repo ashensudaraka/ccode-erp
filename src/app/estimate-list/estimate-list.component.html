@@ -1,0 +1,92 @@
+<div class="row">
+    <div class="col">
+        <h4>Estimates</h4>
+    </div>
+    <div class="col">
+        <button type="button" class="btn btn-success newEstimateBtn mt-2" (click)="displayEstimate('')">New Estimate</button>
+    </div>
+</div>
+
+<hr>
+
+<div class="row">
+
+    <!--Grid area-->
+    <div class="col-9">
+
+        <div class="form-row mb-3">
+
+            <div class="col-3">
+                <label for="searchField1">Estimate No</label>
+                <input type="text" class="form-control" id="searchField1" [(ngModel)]="searchEstimateNo" placeholder="Search by Estimate No">
+            </div>
+
+            <div class="col-3">
+                <label for="searchField1">Client Name</label>
+                <input type="text" class="form-control" id="searchField2" [(ngModel)]="searchCustomerName" placeholder="Search by Client Name">
+            </div>
+
+            <div class="col-3">
+                <label for="searchField1">Estimate Date</label>
+                <input type="text" class="form-control" id="searchField3" [(ngModel)]="searchEstimateDate" placeholder="Search by Estimate Date">
+            </div>
+
+            <div class="col-3">
+                <button type="button" class="btn btn-success mt-4">Search</button>
+                <button type="button" class="btn btn-primary mt-4" style="margin-left: 5px;">Reset</button>
+            </div>
+
+        </div>
+
+        <div class="table-wrapper-scroll-y my-custom-scrollbar">
+            <table class="table table-striped table-hover table-bordered table-sm mb-0">
+                <thead>
+                    <tr>
+                        <th scope="col">
+                            <span class="tableHeading">Estimate No</span>
+                        </th>
+                        <th scope="col">
+                            <span class="tableHeading">Client Name</span>
+                        </th>
+                        <th scope="col">
+                            <span class="tableHeading">Status</span>
+                        </th>
+                        <th scope="col">
+                            <span class="tableHeading">Estimate Date</span>
+                        </th>
+                        <th scope="col">
+                            <span class="tableHeading">Valid Till</span>
+                        </th>
+                        <th scope="col">
+                            <span class="tableHeading">Method</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of estimateHeaderArray" (click)="displayEstimate(data)" style="cursor: pointer;">
+                        <td>{{ data.estimateNo }}</td>
+                        <td>{{ data.customerCode }}</td>
+                        <td>{{ data.status }}</td>
+                        <td>{{ data.estimateDate }}</td>
+                        <td>{{ data.validDate }}</td>
+                        <td>{{ data.sendMethod }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <!--Detail area-->
+    <div class="col-3">
+        <div>
+            <div class="row">
+                <div class="col-12" style="text-align: center;">
+                    <p class="errorIcon"><i class="far fa-hand-point-left"></i></p>
+                    <p class="errorText">Select a estimation record to see more information</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

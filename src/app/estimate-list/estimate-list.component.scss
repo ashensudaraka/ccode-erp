@@ -1,0 +1,95 @@
+//Heading
+h4 {
+    color: #257dbd;
+    margin-top: 15px;
+}
+
+//Button
+.newEstimateBtn {
+    position: absolute;
+    right: 15px;
+}
+
+//Details area
+.displayItemArea h5,
+.updateItemArea h5,
+.addItemArea h5 {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    color: #1f1f1f;
+}
+
+//Table error messages when filtering
+.errorIcon {
+    margin-top: 50px;
+    font-size: 130px;
+    color: silver;
+}
+
+.errorText {
+    font-size: 14px;
+    color: silver;
+    font-weight: bold;
+    margin-top: -20px;
+}
+
+//Hr line
+hr {
+    margin-top: 5px;
+}
+
+//Table
+tr:focus {
+    background-color: yellow;
+    color: black;
+}
+
+thead {
+    background-color: #d3d3d3;
+}
+
+.tableHeading {
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.my-custom-scrollbar {
+    position: relative;
+    height: 45vh;
+    overflow: auto;
+}
+
+.table-wrapper-scroll-y {
+    display: block;
+}
+
+//For remove number arrow icon
+
+/* Chrome, Safari, Edge, Opera */
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+/* Firefox */
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+//Input lbel
+label {
+    font-size: 15px;
+    font-weight: 550;
+    color: #696969;
+    margin-bottom: 0px;
+}
+
+//Messages
+#successAlert,
+#errorAlert {
+    display: none;
+}

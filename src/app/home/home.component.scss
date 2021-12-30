@@ -1,0 +1,72 @@
+.headerContainer {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.navbar {
+    background-color: #257dbd;
+    color: white;
+    width: 100%;
+}
+
+.bottomNavbar {
+    background-color: #002842;
+    color: white;
+}
+
+.nav-item .nav-link {
+    color: white;
+}
+
+.nav-item .nav-link:hover {
+    background-color: #4b90c2;
+}
+
+.body {
+    background-color: #eef2e6;
+    padding-bottom: 30px;
+}
+
+.bodyContainer {
+    background-color: white;
+    padding-bottom: 20px;
+}
+
+.dropdown-item,
+.nav-link {
+    cursor: pointer;
+}
+
+.nav-link {
+    border-radius: 3px;
+}
+
+.logoutBtn {
+    position: absolute;
+    right: 15px;
+}
+
+//Sub menu
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu a::after {
+    transform: rotate(-90deg);
+    position: absolute;
+    right: 6px;
+    top: 0.8em;
+}
+
+.dropdown-submenu .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-left: 0.1rem;
+    margin-right: 0.1rem;
+}
+
+//Disable pending tags
+a .disabled {
+    pointer-events: none;
+    color: #ccc;
+}

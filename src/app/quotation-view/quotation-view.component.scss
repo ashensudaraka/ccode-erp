@@ -1,0 +1,127 @@
+//Top row -- start
+//Heading
+h4 {
+    color: #257dbd;
+    margin-top: 15px;
+}
+
+.quotationNo {
+    margin-top: 20px;
+}
+
+#status {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+//Top row -- end
+.card {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.quotationTemplate {
+    background-color: #f0f0f1;
+}
+
+//Table
+thead {
+    background-color: #d3d3d3;
+}
+
+.tableHeading {
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.tableData {
+    background-color: white;
+}
+
+.tableData .form-control {
+    border: 1px solid white;
+}
+
+// //Buttons
+.estimationBtn {
+    margin-top: 10px;
+}
+
+.quotationBtn,
+.printBtn,
+.sendBtn {
+    margin-left: 5px;
+}
+
+.cancelBtn,
+.closeBtn {
+    margin-left: 5px;
+    border: 1px solid #d3d3d3;
+}
+
+.calenderBtn {
+    color: grey;
+    background-color: white;
+    border: 1px solid #d3d3d3;
+}
+
+.openModalBtn {
+    border: 1px solid #d3d3d3;
+}
+
+hr {
+    margin-top: 5px;
+}
+
+
+/* Chrome, Safari, Edge, Opera */
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+/* Firefox */
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+//Input labels
+label {
+    font-size: 14px;
+    font-weight: 550;
+    color: #696969;
+    margin-bottom: 0px;
+}
+
+//Table of item selection
+#itemSelectionModal {
+    tr:focus {
+        background-color: yellow;
+        color: black;
+    }
+    thead {
+        background-color: #d3d3d3;
+    }
+    .tableHeading {
+        font-size: 17px;
+        font-weight: 500;
+    }
+    .my-custom-scrollbar {
+        position: relative;
+        height: 45vh;
+        overflow: auto;
+    }
+    .table-wrapper-scroll-y {
+        display: block;
+    }
+}
+
+//Messages
+#successAlert,
+#errorAlert {
+    display: none;
+}

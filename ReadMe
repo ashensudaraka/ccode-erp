@@ -1,0 +1,7 @@
+Setting up the local environment and workspace:
+https://angular.io/guide/setup-local
+
+1. Open VS code with corresponding downloaded folder
+2. In VS code open Integrated command prompt/terminal
+3. run "npm install" command
+3. run "ng serve --open" command
